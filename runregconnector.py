@@ -34,7 +34,3 @@ def send_request(url):
     site_response.raise_for_status() # checks for errors in the API, whether it is properly functioning or not
     raceJson = json.loads(site_response.text)
     return raceJson
-
-# Main program
-link = build_url(search_parameters)
-send_request(link)

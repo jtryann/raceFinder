@@ -5,7 +5,6 @@
 
 import json, requests, pprint
 
-
 # functions!
 def convertZIP(zipcode): # converts ZIP code into Lat/Long
     location_url = 'https://geocode.xyz/' + str(zipcode) + '}?json=1&region=US&auth=436040529742063285307x126692'
@@ -34,9 +33,3 @@ def getWeather(office, gridX, gridY):
     response_weather.raise_for_status()
     weatherdata = json.loads(response_weather.text)
     return weatherdata
-
-
-# Main program
-lat, long = convertZIP(31522)
-office, gridX, gridY = findGrid(lat, long)
-pprint.pprint(getWeather(office, gridX, gridY))
