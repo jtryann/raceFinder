@@ -1,5 +1,6 @@
-from asyncore import write
-import runregconnector as race, weatherconnector as weather, pprint, requests, time
+# This file collects user inputs, displays race and weather info, and displays in tkinter
+
+import runregconnector as race, weatherconnector as weather, pprint, requests, time, tkinter
 
 name, region, states, distance, eventtype, year, startDate, endDate, startpage = '', '','','','','','','',''
 
@@ -19,7 +20,7 @@ for i in matchingEvents:
 
 # Write file
 def write_file(data):
-    file_name = "race_search_" + str(time.gmtime()) + ".txt"
+    file_name = "last_race_search.txt"
     file = open(file_name, "w")
     file.write(str(data))
     file.close()
