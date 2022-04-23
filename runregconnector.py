@@ -8,9 +8,9 @@ import json, os, requests, pprint
 # Initializing all possible search terms for this particular API
 name, region, states, distance, eventtype, year, startDate, endDate, startpage = '', '','','','','','','',''
 
-pretty_parameter_labels = ['Race Name', 'Region', 'State', 'Race Distance', 'Event Type', 'Year', 'Search Start Date', 'Search End Date', 'Results Page #']
-parameter_labels = ['name', 'region', 'state', 'distance', 'eventtype', 'year', 'startDate', 'endDate', "startpage"]
-search_parameters = [name, region, states, distance, eventtype, year, startDate, endDate, startpage]
+pretty_parameter_labels = ['Region', 'State', 'Race Distance', 'Event Type', 'Year', 'Search Start Date', 'Search End Date']
+parameter_labels = ['region', 'state', 'distance', 'eventtype', 'year', 'startDate', 'endDate']
+search_parameters = [region, states, distance, eventtype, year, startDate, endDate]
 
 # def input_parameters():
 #     for i in search_parameter_labels:

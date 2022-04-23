@@ -1,26 +1,35 @@
-# This file collects user inputs, displays race and weather info, and displays in tkinter
-
 import runregconnector as race, weatherconnector as weather, pprint
 
 name, region, states, distance, eventtype, year, startDate, endDate, startpage = '', '','','','','','','',''
 
-pretty_parameter_labels = ['Race Name', 'Region', 'State', 'Race Distance', 'Event Type', 'Year', 'Search Start Date', 'Search End Date', 'Results Page #']
-parameter_labels = ['name', 'region', 'state', 'distance', 'eventtype', 'year', 'startDate', 'endDate', "startpage"]
-search_parameters = [name, region, states, distance, eventtype, year, startDate, endDate, startpage]
+pretty_parameter_labels = ['Region', 'State', 'Race Distance', 'Event Type', 'Year', 'Search Start Date', 'Search End Date']
+parameter_labels = ['region', 'state', 'distance', 'eventtype', 'year', 'startDate', 'endDate']
+search_parameters = [region, states, distance, eventtype, year, startDate, endDate]
 
-def sortRaceData():
+# def addWeather(ZIP):
+#     weather.getWeather(weather.findGrid(latitude, longitude))
+
+def compileRaceData():
     raceData = race.send_request(race.build_url(search_parameters))
     matchingEvents = raceData['MatchingEvents']
-    eventsData = {}
+    eventData = {}
+    events = [] # stores each race info as a dictionary in a list
     for i in matchingEvents:
-        eventsData['event_name'] = i.get('EventName')
-        eventsData['ZIP'] = i.get('EventZip')
-        eventsData['city'] = i.get('EventCity')
-        eventsData['state'] = i.get('EventState')
-        eventsData['types'] = i.get('EventTypes')
-        eventsData['categories'] = i.get('Categories')
-        eventsData['URL'] = i.get('EventUrl')
-    return eventsData
+        eventData = {}
+        eventData['event_name'] = i.get('EventName')
+        eventData['ZIP'] = i.get('EventZip')
+        eventData['lat'] = i.get('Latitude')
+        eventData['long'] = i.get('Longitude')
+        eventData['city'] = i.get('EventCity')
+        eventData['state'] = i.get('EventState')
+        eventData['types'] = i.get('EventTypes')
+        eventData['categories'] = i.get('Categories')
+        eventData['URL'] = i.get('EventUrl')
+        eventData['Weather'] = weather.getWeather(weather.findGrid(eventData['lat'], eventData['long']))
+        events.append(eventData)
+    print(events)
+    return events # releases event Data from the top 100 races in list format
+
 
 # Write file
 def write_file(data):
@@ -28,3 +37,5 @@ def write_file(data):
     file = open(file_name, "w")
     file.write(str(data))
     file.close()
+
+compileRaceData()
