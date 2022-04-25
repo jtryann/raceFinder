@@ -26,7 +26,6 @@ def findGrid(latitude, longitude):
     x_grid = grid_location['properties']['gridX'] # selects grid X coordinate
     y_grid = grid_location['properties']['gridY'] # selects grid Y coordinate
     officeData = [nws_office, x_grid, y_grid]
-    print(officeData)
     return officeData
 
 # Finally, now we can get the weather!
@@ -36,6 +35,5 @@ def getWeather(officeData):
     gridY = officeData[2]
     weather_url = 'https://api.weather.gov/gridpoints/'+ office + '/' + str(gridX) + ','+ str(gridY) + '/forecast'
     response_weather = requests.get(weather_url)
-    response_weather.raise_for_status()
     weatherdata = json.loads(response_weather.text)
     return weatherdata
