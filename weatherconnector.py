@@ -35,5 +35,17 @@ def getWeather(officeData):
     gridY = officeData[2]
     weather_url = 'https://api.weather.gov/gridpoints/'+ office + '/' + str(gridX) + ','+ str(gridY) + '/forecast'
     response_weather = requests.get(weather_url)
-    weatherdata = json.loads(response_weather.text)
-    return weatherdata
+    jsondata = json.loads(response_weather.text)
+    weatherdata = jsondata['properties']
+    forecastdata = weatherdata['periods']
+    sorteddata = []
+    for i in range(14):
+        tempdict = {}
+        tempdict['timeframe'] = forecastdata[i]['name']
+        tempdict['temperature'] = forecastdata[i]['temperature']
+        tempdict['windSpeed'] = forecastdata[i]['windSpeed']
+        tempdict['windDirection'] = forecastdata[i]['windDirection']
+        tempdict['forecast'] = forecastdata[i]['shortForecast']
+        tempdict['icon'] = forecastdata[i]['icon']
+        sorteddata.append(tempdict)
+    return sorteddata
