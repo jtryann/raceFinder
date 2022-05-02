@@ -30,7 +30,7 @@ def compileRaceData():
         eventData['categories'] = i.get('Categories')
         eventData['URL'] = i.get('EventUrl')     
         if eventData['ZIP'] != 11111: # if invalid ZIP code, do not add race to list and get weather data
-            # eventData['Weather'] = weather.getWeather(weather.findGrid(eventData['lat'], eventData['long']))
+            eventData['Weather'] = weather.getWeather(weather.findGrid(eventData['lat'], eventData['long']))
             events.append(eventData)
     return events # releases event Data from the top 100 races in list format
 
