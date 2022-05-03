@@ -1,18 +1,17 @@
-from itertools import count
-import runregconnector as race, weatherconnector as weather, pprint
+import runregconnector as race, weatherconnector as weather, pprint, csv
 
 name, region, states, distance, eventtype, year, startDate, endDate, startpage = '', '','','','','','','',''
 
-pretty_parameter_labels = ['Region', 'State', 'Race Distance', 'Event Type', 'Year', 'Search Start Date', 'Search End Date']
-parameter_labels = ['region', 'state', 'distance', 'eventtype', 'year', 'startDate', 'endDate']
-search_parameters = [region, states, distance, eventtype, year, startDate, endDate]
+pretty_parameter_labels = ['Region', 'State', 'Race Distance', 'Event Type', 'Year']
+parameter_labels = ['region', 'state', 'distance', 'eventtype', 'year']
+search_parameters = [region, states, distance, eventtype, year]
+headers = ['event_name','ZIP','city','state','types','categories','URL','Weather']
+
 states = 'GA'
+distance = '10 km'
 
-# def addWeather(ZIP):
-#     weather.getWeather(weather.findGrid(latitude, longitude))
-
-def compileRaceData():
-    raceData = race.send_request(race.build_url(search_parameters))
+def compileRaceData(parameters):
+    raceData = race.send_request(race.build_url(parameters))
     matchingEvents = raceData['MatchingEvents']
     eventData = {}
     events = [] # stores each race info as a dictionary in a list
@@ -36,15 +35,17 @@ def compileRaceData():
                 pass
             events.append(eventData)
         counter += 1
-        if counter > 10:
+        if counter > (5 or len(matchingEvents)):
+            print(len(matchingEvents))
             return events # releases event Data from the top 10 races in list format
-        return events
 
 # Write file
 def write_file(data):
-    file_name = "last_race_search.txt"
+    file_name = "last_race_search.csv"
     file = open(file_name, "w")
-    file.write(str(data))
+    writer = csv.DictWriter(file, fieldnames=headers) # Use dict writer because it gives dictionaries
+    writer.writeheader()
+    writer.writerows(data)
     file.close()
 
-write_file(compileRaceData())
+# write_file(compileRaceData(search_parameters))
