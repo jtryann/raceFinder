@@ -2,6 +2,9 @@ import tkinter as tk
 import tkinter.font as tkFont
 import racesearch
 
+Region, State, Distance, Year, EventType = '','','','',''
+parameters = [Region, State, Distance, Year, EventType]
+
 class App:
     def __init__(self, root):
         #setting title
@@ -15,6 +18,8 @@ class App:
         root.geometry(alignstr)
         root.resizable(width=False, height=False)
 
+        global Region, State, Distance, Year, EventType
+
         guititle=tk.Message(root)
         ft = tkFont.Font(family='Times',size=16)
         guititle["font"] = ft
@@ -23,7 +28,7 @@ class App:
         guititle["text"] = "raceFinder"
         guititle.place(x=50,y=30,width=200,height=50)
 
-        region=tk.Entry(root)
+        region=tk.Entry(root, textvariable=Region)
         region["borderwidth"] = "1px"
         ft = tkFont.Font(family='Times',size=10)
         region["font"] = ft
@@ -39,9 +44,10 @@ class App:
         state["fg"] = "#333333"
         state["justify"] = "center"
         state["text"] = "State"
+        state["textvariable"] = State
         state.place(x=50,y=120,width=250,height=25)
 
-        distance=tk.Entry(root)
+        distance=tk.Entry(root, textvariable=Distance)
         distance["borderwidth"] = "1px"
         ft = tkFont.Font(family='Times',size=10)
         distance["font"] = ft
@@ -50,7 +56,7 @@ class App:
         distance["text"] = "Distance"
         distance.place(x=50,y=160,width=250,height=25)
 
-        year=tk.Entry(root)
+        year=tk.Entry(root, textvariable=Year)
         year["borderwidth"] = "1px"
         ft = tkFont.Font(family='Times',size=10)
         year["font"] = ft
@@ -59,7 +65,7 @@ class App:
         year["text"] = "Year"
         year.place(x=50,y=200,width=250,height=25)
 
-        eventtype=tk.Entry(root)
+        eventtype=tk.Entry(root, textvariable=EventType)
         eventtype["borderwidth"] = "1px"
         ft = tkFont.Font(family='Times',size=10)
         eventtype["font"] = ft
@@ -67,8 +73,6 @@ class App:
         eventtype["justify"] = "center"
         eventtype["text"] = "Event Type"
         eventtype.place(x=50,y=240,width=250,height=25)
-
-        parameters = [region, state, distance, year, eventtype]
 
         createCSV=tk.Button(root)
         createCSV["bg"] = "#efefef"
@@ -96,7 +100,8 @@ class App:
 
 
     def showTopResult_command(self):
-        print("command")
+        global parameters
+        print(parameters)
 
 if __name__ == "__main__":
     root = tk.Tk()
