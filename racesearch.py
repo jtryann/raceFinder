@@ -1,15 +1,5 @@
 import runregconnector as race, weatherconnector as weather, pprint, csv
 
-name, region, states, distance, eventtype, year, startDate, endDate, startpage = '', '','','','','','','',''
-
-pretty_parameter_labels = ['Region', 'State', 'Race Distance', 'Event Type', 'Year']
-parameter_labels = ['region', 'state', 'distance', 'eventtype', 'year']
-search_parameters = [region, states, distance, eventtype, year]
-headers = ['event_name','ZIP','city','state','types','categories','URL','Weather']
-
-states = 'GA'
-distance = '10 km'
-
 def compileRaceData(parameters):
     raceData = race.send_request(race.build_url(parameters))
     matchingEvents = raceData['MatchingEvents']
@@ -33,20 +23,7 @@ def compileRaceData(parameters):
                 eventData['Weather'] = weather.getWeather(weather.findGrid(latitude, longitude))
             except:
                 pass
-            events.append(eventData)
+        events.append(eventData)
         counter += 1
-        if counter > (10 or len(matchingEvents)):
-            print(len(matchingEvents))
+        if counter > 10 or counter > len(matchingEvents):
             return events # releases event Data from the top 10 races in list format
-
-# Write file
-def write_file(data, name):
-    if name != '':
-        file_name = str(name) + ".csv"
-    else:
-        file_name = "last_race_search.csv"
-    file = open(file_name, "w")
-    writer = csv.DictWriter(file, fieldnames=headers) # Use dict writer because it gives dictionaries
-    writer.writeheader()
-    writer.writerows(data)
-    file.close()
