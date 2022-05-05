@@ -1,109 +1,76 @@
-import tkinter as tk
-import tkinter.font as tkFont
-import racesearch
+# Import Tkinter
+from tkinter import *
+import racesearch as search
 
-Region, State, Distance, Year, EventType = '','','','',''
-parameters = [Region, State, Distance, Year, EventType]
+# Create Tkinter Frame
+win = Tk()
 
-class App:
-    def __init__(self, root):
-        #setting title
-        root.title("raceFinder")
-        #setting window size
-        width=600
-        height=500
-        screenwidth = root.winfo_screenwidth()
-        screenheight = root.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        root.geometry(alignstr)
-        root.resizable(width=False, height=False)
+# Set the size of window!
+win.geometry("725x250")
 
-        global Region, State, Distance, Year, EventType
+# Define my parameter variables of strings!
+region, state, distance, eventType, year, fileName = StringVar(), StringVar(), StringVar(), StringVar(), StringVar(), StringVar()
 
-        guititle=tk.Message(root)
-        ft = tkFont.Font(family='Times',size=16)
-        guititle["font"] = ft
-        guititle["fg"] = "#333333"
-        guititle["justify"] = "left"
-        guititle["text"] = "raceFinder"
-        guititle.place(x=50,y=30,width=200,height=50)
+# Define a function to print the Entry widget Input
+def printinput(*args):
+   global region, state, distance, eventType, year, fileName
+   parameters = [region.get(), state.get(), distance.get(), eventType.get(), year.get()]
+   print(parameters)
 
-        region=tk.Entry(root, textvariable=Region)
-        region["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Times',size=10)
-        region["font"] = ft
-        region["fg"] = "#333333"
-        region["justify"] = "center"
-        region["text"] = "Region"
-        region.place(x=50,y=80,width=250,height=25)
+def searching():
+   global region, state, distance, eventType, year, fileName
+   parameters = [region.get(), state.get(), distance.get(), eventType.get(), year.get()]
+   search.write_file(search.compileRaceData(parameters),fileName.get())
 
-        state=tk.Entry(root)
-        state["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Times',size=10)
-        state["font"] = ft
-        state["fg"] = "#333333"
-        state["justify"] = "center"
-        state["text"] = "State"
-        state["textvariable"] = State
-        state.place(x=50,y=120,width=250,height=25)
+# Creating Title
+titletext = "raceFinder"
+title = Label(win, text=titletext, font=28)
+title.grid(row=0,column=0, columnspan=2)
 
-        distance=tk.Entry(root, textvariable=Distance)
-        distance["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Times',size=10)
-        distance["font"] = ft
-        distance["fg"] = "#333333"
-        distance["justify"] = "center"
-        distance["text"] = "Distance"
-        distance.place(x=50,y=160,width=250,height=25)
+# Description label
+desc_text = "Welcome to raceFinder! Enter search terms below to be returned with a csv of the top 10 results, their race, location, and weather info!"
+description = Label(win, text=desc_text)
+description.grid(row=1,column=0, columnspan=2)
 
-        year=tk.Entry(root, textvariable=Year)
-        year["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Times',size=10)
-        year["font"] = ft
-        year["fg"] = "#333333"
-        year["justify"] = "center"
-        year["text"] = "Year"
-        year.place(x=50,y=200,width=250,height=25)
+# Entry widget for REGION and its label
+regionLabel = Label(win, text="Region")
+regionLabel.grid(row=2,column=0)
+regionEntry = Entry(win, width=35, textvariable=region)
+regionEntry.grid(row=2,column=1)
 
-        eventtype=tk.Entry(root, textvariable=EventType)
-        eventtype["borderwidth"] = "1px"
-        ft = tkFont.Font(family='Times',size=10)
-        eventtype["font"] = ft
-        eventtype["fg"] = "#333333"
-        eventtype["justify"] = "center"
-        eventtype["text"] = "Event Type"
-        eventtype.place(x=50,y=240,width=250,height=25)
+# Entry widget for STATE and its label
+stateLabel = Label(win, text="State")
+stateLabel.grid(row=3,column=0)
+stateEntry = Entry(win, width=35, textvariable=state)
+stateEntry.grid(row=3,column=1)
 
-        createCSV=tk.Button(root)
-        createCSV["bg"] = "#efefef"
-        ft = tkFont.Font(family='Times',size=10)
-        createCSV["font"] = ft
-        createCSV["fg"] = "#000000"
-        createCSV["justify"] = "center"
-        createCSV["text"] = "Create CSV File"
-        createCSV.place(x=150,y=350,width=300,height=45)
-        createCSV["command"] = self.createCSV_command
+# Entry widget for DISTANCE and its label
+distanceLabel = Label(win, text="Distance")
+distanceLabel.grid(row=4,column=0)
+distanceEntry = Entry(win, width=35, textvariable=distance)
+distanceEntry.grid(row=4,column=1)
 
-        showTopResult=tk.Button(root)
-        showTopResult["bg"] = "#efefef"
-        ft = tkFont.Font(family='Times',size=10)
-        showTopResult["font"] = ft
-        showTopResult["fg"] = "#000000"
-        showTopResult["justify"] = "center"
-        showTopResult["text"] = "Show Top Result"
-        showTopResult.place(x=150,y=400,width=300,height=45)
-        showTopResult["command"] = self.showTopResult_command
+# Entry widget for EVENT TYPE and its label
+eventTypeLabel = Label(win, text="Event Type")
+eventTypeLabel.grid(row=5,column=0)
+eventTypeEntry = Entry(win, width=35, textvariable=eventType)
+eventTypeEntry.grid(row=5,column=1)
 
+# Entry widget for YEAR and its label
+yearLabel = Label(win, text="Year")
+yearLabel.grid(row=6,column=0)
+yearEntry = Entry(win, width=35, textvariable=year)
+yearEntry.grid(row=6,column=1)
 
-    def createCSV_command(self):
-        print("command")
+# Entry widget for FILENAME and its label
+fileNameLabel = Label(win, text="Output File Name")
+fileNameLabel.grid(row=7,column=0)
+fileNameEntry = Entry(win, width=35, textvariable=fileName)
+fileNameEntry.grid(row=7,column=1)
 
+# Button printing all entry variables
+printButton = Button(win,width=35, text="Search and Create CSV", command=searching, cursor="dot")
+printButton.grid(row=8,column=1)
 
-    def showTopResult_command(self):
-        global parameters
-        print(parameters)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
+# Trace the Input from Entry widget
+win.mainloop()

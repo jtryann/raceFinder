@@ -35,17 +35,18 @@ def compileRaceData(parameters):
                 pass
             events.append(eventData)
         counter += 1
-        if counter > (5 or len(matchingEvents)):
+        if counter > (10 or len(matchingEvents)):
             print(len(matchingEvents))
             return events # releases event Data from the top 10 races in list format
 
 # Write file
-def write_file(data):
-    file_name = "last_race_search.csv"
+def write_file(data, name):
+    if name != '':
+        file_name = str(name) + ".csv"
+    else:
+        file_name = "last_race_search.csv"
     file = open(file_name, "w")
     writer = csv.DictWriter(file, fieldnames=headers) # Use dict writer because it gives dictionaries
     writer.writeheader()
     writer.writerows(data)
     file.close()
-
-# write_file(compileRaceData(search_parameters))
