@@ -7,17 +7,19 @@ import json, requests, pprint
 
 # functions!
 def convertZIP(zipcode): # converts ZIP code into Lat/Long
-    location_url = 'https://geocode.xyz/' + str(zipcode) + '}?json=1&region=US&auth=436040529742063285307x126692'
+    location_url = 'https://geocode.xyz/' + str(zipcode) + '}?json=1&region=US'
     response_zip = requests.get(location_url)
     response_zip.raise_for_status()
     location = json.loads(response_zip.text)
     latitude = location["latt"]
     longitude = location["longt"]
     latlong = [latitude, longitude]
-    return latitude, longitude
+    return latlong
 
  # This function part searches for the 2.5km grid that the NWS splits the US into, and that the ZIP code is located in
-def findGrid(latitude, longitude):
+def findGrid(latlong):
+    latitude = latlong[0]
+    longitude = latlong[1]
     grid_url = 'https://api.weather.gov/points/' + str(latitude) + ',' + str(longitude)
     response_grid = requests.get(grid_url)
     response_grid.raise_for_status()
@@ -49,3 +51,5 @@ def getWeather(officeData):
         tempdict['icon'] = forecastdata[i]['icon']
         sorteddata.append(tempdict)
     return sorteddata
+
+print(convertZIP(30030))
