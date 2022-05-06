@@ -51,5 +51,3 @@ def getWeather(officeData):
         tempdict['icon'] = forecastdata[i]['icon']
         sorteddata.append(tempdict)
     return sorteddata
-
-print(convertZIP(30030))

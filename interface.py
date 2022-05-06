@@ -6,7 +6,7 @@ import runregconnector, weatherconnector, csv
 # Create Tkinter Frame
 win = Tk()
 win.title("raceFinder")
-headers = ['event_name','ZIP','city','state','types','categories','URL','Weather']
+headers = ['event_name','ZIP','city','state','types','categories','URL','latitude','longitude','Weather']
 
 # Set the size of window!
 win.geometry("725x250")
@@ -25,6 +25,7 @@ def write_file(data, name):
     writer = csv.DictWriter(file, fieldnames=headers) # Use dict writer because it gives dictionaries
     writer.writeheader()
     writer.writerows(data)
+    print('CSV file successfully created.') # This is used to create a log of successful executions.
     file.close()
 
 def searching():
@@ -32,7 +33,6 @@ def searching():
    parameters = [region.get(), states.get(), name.get(), eventType.get(), year.get()]
    raceData = search.compileRaceData(parameters)
    write_file(raceData, fileName.get())
-   print("CSV file successfully created.")
 
 # Creating Title
 titletext = "raceFinder"
